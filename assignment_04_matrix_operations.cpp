@@ -65,3 +65,133 @@
 #include <string>
 using namespace std;
 
+void readMatrix(int matrix[10][10], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> matrix[i][j];
+        }
+    }
+}
+
+void displayMatrix(int matrix[10][10], int rows, int cols, const string& label) {
+    cout << label << endl;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << setw(5) << matrix[i][j];
+        }
+        cout << endl;
+    }
+}
+
+void transposeMatrix(int matrix[10][10], int result[10][10], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[j][i] = matrix[i][j];
+        }
+    }
+}
+
+void addMatrices(int a[10][10], int b[10][10], int result[10][10], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+}
+
+void multiplyMatrices(int a[10][10], int b[10][10], int result[10][10],
+                       int rowsA, int colsA, int colsB) {
+    for (int i = 0; i < rowsA; i++) {
+        for (int j = 0; j < colsB; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < colsA; k++) {
+                result[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+}
+
+int main() {
+    int matrixA[10][10], matrixB[10][10], result[10][10];
+    int choice;
+
+    cout << "Matrix Operations Menu" << endl;
+    cout << "1. Transpose a Matrix" << endl;
+    cout << "2. Add Two Matrices" << endl;
+    cout << "3. Multiply Two Matrices" << endl;
+    cout << "Enter choice: ";
+    cin >> choice;
+
+    if (choice == 1) {
+        int rows, cols;
+        cout << "Enter number of rows: ";
+        cin >> rows;
+        cout << "Enter number of columns: ";
+        cin >> cols;
+
+        readMatrix(matrixA, rows, cols);
+        transposeMatrix(matrixA, result, rows, cols);
+
+        cout << endl;
+        displayMatrix(matrixA, rows, cols, "Original Matrix:");
+        cout << endl;
+        displayMatrix(result, cols, rows, "Transposed Matrix:");
+
+    } else if (choice == 2) {
+        int rows, cols;
+        cout << "Enter number of rows: ";
+        cin >> rows;
+        cout << "Enter number of columns: ";
+        cin >> cols;
+
+        cout << "Matrix A:" << endl;
+        readMatrix(matrixA, rows, cols);
+        cout << "Matrix B:" << endl;
+        readMatrix(matrixB, rows, cols);
+
+        addMatrices(matrixA, matrixB, result, rows, cols);
+
+        cout << endl;
+        displayMatrix(matrixA, rows, cols, "Matrix A:");
+        cout << endl;
+        displayMatrix(matrixB, rows, cols, "Matrix B:");
+        cout << endl;
+        displayMatrix(result, rows, cols, "Sum:");
+
+    } else if (choice == 3) {
+        int rowsA, colsA, rowsB, colsB;
+        cout << "Enter rows for Matrix A: ";
+        cin >> rowsA;
+        cout << "Enter columns for Matrix A: ";
+        cin >> colsA;
+        cout << "Enter rows for Matrix B: ";
+        cin >> rowsB;
+        cout << "Enter columns for Matrix B: ";
+        cin >> colsB;
+
+        if (colsA != rowsB) {
+            cout << "Error: Columns of A must equal rows of B for multiplication." << endl;
+            return 0;
+        }
+
+        cout << "Matrix A:" << endl;
+        readMatrix(matrixA, rowsA, colsA);
+        cout << "Matrix B:" << endl;
+        readMatrix(matrixB, rowsB, colsB);
+
+        multiplyMatrices(matrixA, matrixB, result, rowsA, colsA, colsB);
+
+        cout << endl;
+        displayMatrix(matrixA, rowsA, colsA, "Matrix A:");
+        cout << endl;
+        displayMatrix(matrixB, rowsB, colsB, "Matrix B:");
+        cout << endl;
+        displayMatrix(result, rowsA, colsB, "Product:");
+
+    } else {
+        cout << "Invalid choice." << endl;
+    }
+
+    return 0;
+}
